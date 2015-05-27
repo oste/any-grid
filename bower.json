@@ -1,0 +1,19 @@
+{
+  "name": "any-grid",
+  "version": "0.0.1",
+  "description": "Grid Library",
+  "main": "any-grid.js",
+  "dependencies": {
+    "outlayer": "~1.4.0",
+    "imagesloaded": "~3"
+  },
+  "homepage": "http://any-grid.ostehost.com",
+  "authors": [
+    "Mike Osterhout"
+  ],
+  "keywords": [
+    "any grid",
+    "layout"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "any-grid",
+  "version": "0.0.1",
+  "repository": {
+    "url": "git://github.com/oste/any-grid.git"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.11",
+    "gulp-concat": "~2.5.2",
+    "gulp-uglify": "~1.2.0",
+    "gulp-rename": "~1.2.2"
+  }
+}
