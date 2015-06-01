@@ -1,0 +1,12 @@
+{
+  "name": "Sandbox",
+  "version": "1.0.0",
+  "dependencies": {
+    "angular": "~1",
+    "angular-material": "~0.9",
+    "angular-ui-router": "~0.2.13",
+    "material-design-icons": "latest",
+    "sanitize-css": "*",
+    "any-grid": "*"
+  }
+}

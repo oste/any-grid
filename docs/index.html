@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+    <base href="/">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Any Grid Documentation and Examples</title>
+
+    <link href="/app/Resources/css/app.css" rel="stylesheet">
+
+    </head>
+    <body layout="row" ng-cloak>
+
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">AnyGrid</h1>
+            </md-toolbar>
+                <md-list layout-fill>
+                    <md-list-item ui-sref-active="active" class="md-2-line">
+                        <md-button ui-sref="home" class="">Docs</md-button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+
+                    <md-subheader class="md-no-sticky">Demos</md-subheader>
+                    <md-list>
+                        <md-list-item ui-sref-active="active" class="md-2-line">
+                            <md-button ui-sref="slider" class="">Slider</md-button>
+                        </md-list-item>
+                        <md-list-item ui-sref-active="active" class="md-2-line">
+                            <md-button ui-sref="masonry" class="">Masonry</md-button>
+                        </md-list-item>
+                        <md-list-item ui-sref-active="active" class="md-2-line">
+                            <md-button ui-sref="flush" class="">Flush</md-button>
+                        </md-list-item>
+                    </md-list>
+                </md-list>
+        </md-sidenav>
+
+        <main flex layout="column">
+            <md-toolbar class="md-whiteframe-z1 site-content-toolbar">
+                <div class="md-toolbar-tools  md-toolbar-tools-bottom" flex="" tabindex="0">
+
+                </div>
+            </md-toolbar>
+
+            <md-content md-scroll-y infinite-scroll="'main'" flex layout-padding class="ng-scope md-default-">
+                <div ui-view="main"></div>
+            </md-content>
+
+            <footer>
+                <md-divider></md-divider>
+            </footer>
+
+         </main>
+
+        <script type="text/ng-template" id="home.html">
+            docs go here
+        </script>
+
+        <script type="text/ng-template" id="slider.html">
+            <div flex layout class="slider">
+
+                <main flex grid>
+                    <div ng-repeat="data in content" grid-item relayout="true">
+                        <img ng-src="{{data.image}}"/>
+                        <h1 ng-bind="data.headline"></h1>
+                    </div>
+                </main>
+
+                <nav flex-order="-1" layout layout-align="center center">
+                    <md-button class="md-fab" aria-label="Back" ng-click="back()">
+                        <md-icon md-svg-icon="arrow_back" alt="Text"></md-icon>
+                    </md-button>
+                </nav>
+
+                <nav layout layout-align="center center">
+                    <md-button class="md-fab" aria-label="Forward" ng-click="forward()">
+                        <md-icon md-svg-icon="arrow_forward" alt="Text"></md-icon>
+                    </md-button>
+                </nav>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="masonry.html">
+            <div flex layout class="grid">
+                <main flex grid masonry="true">
+                    <div ng-repeat="data in content" grid-item>
+                        <img ng-src="{{data.image}}"/>
+                        <h1 ng-bind="data.headline"></h1>
+                    </div>
+                </main>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="flush.html">
+            <div flex layout class="grid">
+                <main flex grid>
+                    <div ng-repeat="data in content" grid-item>
+                        <img ng-src="{{data.image}}"/>
+                        <h1 ng-bind="data.headline"></h1>
+                    </div>
+                </main>
+            </div>
+        </script>
+
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/angular-aria/angular-aria.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.js"></script>
+        <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="/bower_components/angular-material/angular-material.js"></script>
+        <script src="/bower_components/angular-messages/angular-messages.js"></script>
+        <script src="/app/Resources/js/any-grid.js"></script>
+        <script src="/app/Resources/js/app/app.module.js"></script>
+        <script src="/app/Resources/js/app/app.directives.js"></script>
+        <script src="/app/Resources/js/app/app.services.js"></script>
+        <script src="/app/Resources/js/app/app.controllers.js"></script>
+        <script src="/app/Resources/js/app/config/app.config.js"></script>
+        <script src="/app/Resources/js/app/config/app.routes.js"></script>
+    </body>
+</html>
