@@ -3,8 +3,7 @@ var concat    = require('gulp-concat');
 var uglify    = require('gulp-uglify');
 var rename    = require('gulp-rename');
 
-var scripts = ['bower_components/imagesloaded/imagesloaded.pkgd.js',
-                'bower_components/get-style-property/get-style-property.js',
+var scripts = ['bower_components/get-style-property/get-style-property.js',
                 'bower_components/get-size/get-size.js',
                 'bower_components/matches-selector/matches-selector.js',
                 'bower_components/eventEmitter/EventEmitter.js',
@@ -21,6 +20,7 @@ gulp.task('build', function() {
     gulp.src(scripts)
         .pipe(concat('any-grid.js'))
         .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('docs/app/Resources/js'))
         .pipe(uglify({
             mangle: false
             }))
