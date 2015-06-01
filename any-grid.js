@@ -18,69 +18,38 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
         lg: 5,
         xl: 6,
         xxl: 7
+    },
+    isLayoutInstant: true,
+    hiddenStyle: {
+        opacity: 0
+    },
+    visibleStyle: {
+        opacity: 1
     }
 });
 
-AnyGrid.prototype._create = function() {
-    var that = this;
-
-    this.reloadItems();
-
-    this.element.style.position = "relative";
-
-    // bind resize method
-    this.bindResize();
-
-    imagesLoaded(this.element, function() {
-        that.layout();
-    });
-};
-
-AnyGrid.prototype._resetLayout = function() {
-    var that = this;
-
+AnyGrid.prototype._setUp = function() {
     this.getSize();
 
     this.containerWidth = Math.floor(this.size.outerWidth);
 
-    // can't have comparison in switch
     if (this.containerWidth >= 1400) {
-        this.containerSize = 'xxl';
         this.perRow = this.options.perRow.xxl;
-        //TODO: determine if this is needed
-        // this.element.className = 'grid-size-xxl';
     }else if (this.containerWidth >= 1260) {
-        this.containerSize = 'xl';
         this.perRow = this.options.perRow.xl;
-        // this.element.className = 'grid-size-xl';
     }else if (this.containerWidth >= 1100) {
-        this.containerSize = 'lg';
         this.perRow = this.options.perRow.lg;
-        // this.element.className = 'grid-size-lg';
     }else if (this.containerWidth >= 850) {
-        this.containerSize = 'md';
         this.perRow = this.options.perRow.md;
-        // this.element.className = 'grid-size-md';
     }else if (this.containerWidth >= 600) {
-        this.containerSize = 'sm';
         this.perRow = this.options.perRow.sm;
-        // this.element.className = 'grid-size-sm';
     }else if (this.containerWidth >= 350) {
-        this.containerSize = 'xs';
         this.perRow = this.options.perRow.xs;
-        // this.element.className = 'grid-size-xs';
     }else {
-        this.containerSize = 'xxs';
         this.perRow = this.options.perRow.xxs;
-        // this.element.className = 'grid-size-xxs';
     }
 
     this.columnWidth = (this.containerWidth / this.perRow);
-
-    var list = this.element.children;
-    for (var i = 0; i < list.length; i++) {
-        list[i].style.width = this.columnWidth + 'px';
-    }
 
     this.cols = Math.floor( this.containerWidth / this.columnWidth );
     this.cols = Math.max( this.cols, 1 );
@@ -93,10 +62,28 @@ AnyGrid.prototype._resetLayout = function() {
 
     this.maxHeight = 0;
     this.itemIndex = 0;
+}
+
+AnyGrid.prototype._create = function() {
+    var that = this;
+
+    this.reloadItems();
+
+    this.element.style.position = "relative";
+
+    this.bindResize();
+
+    this._setUp();
+};
+
+AnyGrid.prototype._resetLayout = function() {
+    this._setUp();
 };
 
 AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     item.getSize();
+
+    item.element.style.width = this.columnWidth + 'px';
 
     var column = this.itemIndex % this.cols;
 
