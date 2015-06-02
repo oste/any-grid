@@ -1109,7 +1109,7 @@ utils.modulo = function( num, div ) {
 };
 
 // ----- isArray ----- //
-  
+
 var objToString = Object.prototype.toString;
 utils.isArray = function( obj ) {
   return objToString.call( obj ) == '[object Array]';
@@ -2870,9 +2870,9 @@ AnyGrid.prototype._resetLayout = function() {
 };
 
 AnyGrid.prototype._getItemLayoutPosition = function( item ) {
-    item.getSize();
-
     item.element.style.width = this.columnWidth + 'px';
+
+    item.getSize();
 
     var column = this.itemIndex % this.cols;
 
