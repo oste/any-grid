@@ -1,6 +1,7 @@
 {
   "name": "any-grid",
   "version": "0.0.1",
+  "ignore": [],
   "description": "Grid Library",
   "main": "any-grid.js",
   "dependencies": {
