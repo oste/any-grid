@@ -48,9 +48,16 @@
         </md-sidenav>
 
         <main flex layout="column">
-            <md-toolbar class="md-whiteframe-z1 site-content-toolbar">
-                <div class="md-toolbar-tools  md-toolbar-tools-bottom" flex="" tabindex="0">
-                    Docs and Demos
+            <md-toolbar class="md-whiteframe-z1 site-content-toolbar" layout="row">
+                <div class="md-toolbar-tools  md-toolbar-tools-bottom" layout tabindex="0">
+                    <div flex>Docs and Demos</div>
+                    <span flex></span>
+                    <div flex style="text-align:right;">
+                        <md-button ng-href="https://github.com/oste/any-grid" target="_blank" class="md-icon-button" aria-label="Github">
+                            <md-tooltip>Github</md-tooltip>
+                            <md-icon md-svg-icon="github"></md-icon>
+                        </md-button>
+                    </div>
                 </div>
             </md-toolbar>
 
