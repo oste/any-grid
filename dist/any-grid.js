@@ -2800,13 +2800,13 @@ return Outlayer;
 var AnyGrid = Outlayer.create( 'anyGrid', {
     masonry: true,
     perRow: {
-        xxs: 3,
-        xs: 4,
-        sm: 5,
-        md: 5,
-        lg: 5,
-        xl: 6,
-        xxl: 7
+        xxs: 1,
+        xs: 1,
+        sm: 2,
+        md: 3,
+        lg: 4,
+        xl: 5,
+        xxl: 6
     },
     isLayoutInstant: true,
     hiddenStyle: {
@@ -2822,17 +2822,17 @@ AnyGrid.prototype._setUp = function() {
 
     this.containerWidth = Math.floor(this.size.outerWidth);
 
-    if (this.containerWidth >= 1400) {
+    if (this.containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
-    }else if (this.containerWidth >= 1260) {
+    }else if (this.containerWidth >= 1250) {
         this.perRow = this.options.perRow.xl;
-    }else if (this.containerWidth >= 1100) {
+    }else if (this.containerWidth >= 1000) {
         this.perRow = this.options.perRow.lg;
-    }else if (this.containerWidth >= 850) {
+    }else if (this.containerWidth >= 750) {
         this.perRow = this.options.perRow.md;
-    }else if (this.containerWidth >= 600) {
+    }else if (this.containerWidth >= 500) {
         this.perRow = this.options.perRow.sm;
-    }else if (this.containerWidth >= 350) {
+    }else if (this.containerWidth >= 250) {
         this.perRow = this.options.perRow.xs;
     }else {
         this.perRow = this.options.perRow.xxs;
