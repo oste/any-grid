@@ -19,7 +19,12 @@
 
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
             <md-toolbar class="md-theme-indigo">
-                <h1 class="md-toolbar-tools">AnyGrid</h1>
+            <div class="md-toolbar-tools" layout layout-align="center center">
+                    <div id="logo">
+                        <span>Any</span>
+                        <span>Grid</span>
+                    </div>
+                </div>
             </md-toolbar>
                 <md-list layout-fill>
                     <md-list-item ui-sref-active="active" class="md-2-line">
@@ -62,10 +67,10 @@
         <script type="text/ng-template" id="slider.html">
             <div flex layout class="slider">
 
-                <main flex grid>
+                <main flex grid class="grid">
                     <div ng-repeat="data in content" grid-item relayout="true">
                         <img ng-src="{{data.image}}"/>
-                        <h1 ng-bind="data.headline"></h1>
+                        <h2 class="md-subhead" ng-bind="data.headline"></h2>
                     </div>
                 </main>
 
@@ -88,7 +93,7 @@
                 <main flex grid masonry="true" per-row="{ xxs: 3, xs: 4, sm: 5, md: 6, lg: 7, xl: 8, xxl: 9 }">
                     <div ng-repeat="data in content" grid-item>
                         <img ng-src="{{data.image}}"/>
-                        <h1 ng-bind="data.headline"></h1>
+                        <h2 class="md-subhead" ng-bind="data.headline"></h2>
                     </div>
                 </main>
             </div>
@@ -99,7 +104,7 @@
                 <main flex grid>
                     <div ng-repeat="data in content" grid-item>
                         <img ng-src="{{data.image}}"/>
-                        <h1 ng-bind="data.headline"></h1>
+                        <h2 class="md-subhead" ng-bind="data.headline"></h2>
                     </div>
                 </main>
             </div>
