@@ -85,7 +85,7 @@
 
         <script type="text/ng-template" id="masonry.html">
             <div flex layout class="grid">
-                <main flex grid masonry="true">
+                <main flex grid masonry="true" per-row="{ xxs: 3, xs: 4, sm: 5, md: 6, lg: 7, xl: 8, xxl: 9 }">
                     <div ng-repeat="data in content" grid-item>
                         <img ng-src="{{data.image}}"/>
                         <h1 ng-bind="data.headline"></h1>

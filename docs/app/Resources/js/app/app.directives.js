@@ -2,12 +2,18 @@ app.directive('grid', ['$timeout', 'grid', function ($timeout, grid) {
   return {
     restrict: "A",
     scope: {
-        masonry: '='
+        masonry: '=',
+        perRow: '='
     },
     link: function(scope, element, attrs) {
-        grid.create(element[0], {
+        var options = {
             masonry: scope.masonry
-        });
+        };
+
+        if (scope.perRow)
+            options.perRow = scope.perRow;
+
+        grid.create(element[0], options);
     }
   };
 }]);
