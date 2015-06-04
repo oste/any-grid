@@ -65,11 +65,18 @@ app.controller('SliderCtrl', function($scope, $rootScope, $http, preloader, grid
     }
 });
 
-app.controller('GridCtrl', function($scope, $http, $rootScope, preloader) {
-
-    var limit = 50;
+app.controller('GridCtrl', function($scope, $http, $rootScope, preloader, grid, $timeout) {
     $scope.page = 1;
+    var limit;
+
     $scope.content = [];
+
+    $timeout(function() { // wait for directive to digest
+        limit = grid.getPerRow() * 12; // 12 rows
+        $scope.getData().success(function(data) {
+            process(data);
+        });
+    });
 
     var getOffset = function() {
         return ($scope.page * limit) - limit;
@@ -88,10 +95,6 @@ app.controller('GridCtrl', function($scope, $http, $rootScope, preloader) {
                 }
             });
     }
-
-    $scope.getData().success(function(data) {
-        process(data);
-    });
 
     $rootScope.$on('iscroll.main', function(event) {
         if ($scope.loading) return;
