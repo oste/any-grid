@@ -67,7 +67,7 @@ app.controller('SliderCtrl', function($scope, $rootScope, $http, preloader, grid
 
 app.controller('GridCtrl', function($scope, $http, $rootScope, preloader) {
 
-    var limit = 30;
+    var limit = 50;
     $scope.page = 1;
     $scope.content = [];
 
