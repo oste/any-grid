@@ -1109,7 +1109,7 @@ utils.modulo = function( num, div ) {
 };
 
 // ----- isArray ----- //
-  
+
 var objToString = Object.prototype.toString;
 utils.isArray = function( obj ) {
   return objToString.call( obj ) == '[object Array]';
@@ -2816,6 +2816,19 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
         opacity: 1
     }
 });
+
+AnyGrid.prototype.getPerRow = function() {
+    return this.perRow;
+}
+
+AnyGrid.prototype.resize = function() {
+    if ( !this.isResizeBound || !this.needsResizeLayout() ) {
+        return;
+    }
+    this.emitEvent( 'resize', [ this ] );
+    this.layout();
+    this.emitEvent( 'resized', [ this ] );
+};
 
 AnyGrid.prototype._setUp = function() {
     this.getSize();

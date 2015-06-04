@@ -2817,6 +2817,19 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
     }
 });
 
+AnyGrid.prototype.getPerRow = function() {
+    return this.perRow;
+}
+
+AnyGrid.prototype.resize = function() {
+    if ( !this.isResizeBound || !this.needsResizeLayout() ) {
+        return;
+    }
+    this.emitEvent( 'resize', [ this ] );
+    this.layout();
+    this.emitEvent( 'resized', [ this ] );
+};
+
 AnyGrid.prototype._setUp = function() {
     this.getSize();
 
