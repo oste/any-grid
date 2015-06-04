@@ -2,9 +2,30 @@ app.controller('HomeCtrl', function($scope, $http) {
 
 });
 
-app.controller('SliderCtrl', function($scope, $http, preloader) {
-    var limit = 10;
+app.controller('SliderCtrl', function($scope, $rootScope, $http, preloader, grid, $timeout) {
     $scope.page = 1;
+    var limit;
+
+    $timeout(function() { // wait for directive to digest
+        limit = grid.getPerRow() * 2;
+        $scope.setData();
+
+        var resizeTimeout;
+        grid.get().on('resized', function() {
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
+            }
+            function delay() {
+                var newLimit = grid.getPerRow() * 2;
+                if (newLimit != limit) {
+                    limit = newLimit;
+                    $scope.setData();
+                }
+                delete resizeTimeout;
+            }
+            resizeTimeout = setTimeout(delay, 300);
+        });
+    });
 
     var getOffset = function() {
         return ($scope.page * limit) - limit;
@@ -33,8 +54,6 @@ app.controller('SliderCtrl', function($scope, $http, preloader) {
             });
     }
 
-    $scope.setData();
-
     $scope.back = function() {
         $scope.page = Math.max(1, $scope.page - 1);
         $scope.setData();
@@ -44,7 +63,6 @@ app.controller('SliderCtrl', function($scope, $http, preloader) {
         $scope.page = $scope.page + 1;
         $scope.setData();
     }
-
 });
 
 app.controller('GridCtrl', function($scope, $http, $rootScope, preloader) {

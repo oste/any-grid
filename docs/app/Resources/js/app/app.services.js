@@ -13,11 +13,16 @@ app.factory('grid', function() {
         return grid;
     }
 
+    var getPerRow = function() {
+        return grid.getPerRow();
+    }
+
     return {
         get: get,
         grid: grid,
         isInited: isInited,
-        create: create
+        create: create,
+        getPerRow: getPerRow
     };
 
 });
