@@ -26,7 +26,6 @@ app.directive('gridItem', ['$timeout', 'grid', function($timeout, grid) {
         },
         link: function(scope, elm){
             // this is not always needed - normally any-grid.js would know about the element
-            elm[0].style.width = grid.get().columnWidth + 'px';
             elm[0].style.visibility = 'hidden';
             $timeout(function() {
                 if (scope.relayout) {

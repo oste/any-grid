@@ -12,8 +12,8 @@
 
     <title>Any Grid Documentation and Examples</title>
 
-    <link href="/app/Resources/css/app.css" rel="stylesheet">
-
+    <link href="/app/Resources/css/app.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/app/Resources/css/railscasts.css" rel="stylesheet" type="text/css" media="screen" />
     </head>
     <body layout="row" ng-cloak>
 
@@ -62,13 +62,166 @@
             </md-toolbar>
 
             <md-content md-scroll-y infinite-scroll="'main'" flex layout-padding class="ng-scope md-default-">
-                <div ui-view="main"></div>
+                <div class="content {{ class }}" ui-view="main"></div>
             </md-content>
 
          </main>
 
         <script type="text/ng-template" id="home.html">
-            docs go here
+            <div layout="column">
+                <md-content layout-padding>
+                    <h1 class="md-display-2">What is AnyGrid?</h1>
+                    <p class="md-subhead">
+                    The AnyGrid layout library is a <a target="_blank" href="https://www.google.com/design/spec/components/grid-lists.html#grid-lists-specs">grid list</a> implementation. The only
+                    dependency is the layout itself!
+                    </p>
+
+                    <h2 class="md-display-1">Including AnyGrid</h2>
+                    <p class="md-body-1">The easiest way is to use <a target="_blank" href="https://github.com/oste/any-grid#installing">bower</a>, alternatively access the direct download on <a ng-href="https://github.com/oste/any-grid" target="_blank">Github</a>.</p>
+
+                    <h2 class="md-display-1">Layout</h2>
+                    <p class="md-body-1">AnyGrid relies on a parent children layout structure where the children will be positioned accordingly.</p>
+                <div hljs language="html">
+<main>
+    <div>...</div>
+    <div>...</div>
+    <div>...</div>
+</main>
+</div>
+                    <h2 class="md-display-1">Creating AnyGrid</h2>
+                    <p class="md-body-1">Instantiate AnyGrid by passing it the parent container element and optional options.</p>
+                    <div style="margin-bottom:1rem;" hljs language="bash">
+var grid = new AnyGrid(element, [options]);
+</div>
+
+                    <h3 class="md-subhead">Example:</h3>
+                    <div hljs language="javascript">
+var grid = new AnyGrid(document.getElementById('#main'));
+</div>
+
+                    <h2 class="md-display-1">Options</h2>
+                    <p class="md-body-1">..at your disposal.</p>
+                    <table class="table table-condensed table-hover" style="">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>perRow</code></td>
+                                <td>
+                                    <pre>
+{
+    xxs: 1,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    xxl: 6
+}
+</pre>
+                                </td>
+                                <td>Defines how many children per row at breakpoints</td>
+                            </tr>
+                            <tr>
+                                <td><code>masonry</code></td>
+                                <td>
+                                <pre>
+true
+</pre>
+                                </td>
+                                <td>If set to false child elements will be flush</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="md-display-1">Breakpoints</h2>
+                    <p class="md-body-1">AnyGrid defines 7 breakpoints. The container/parent width is compared to these breakpoints to arrive at a size. Define a value for how many items will be displayed per row at the various breakpoints. Future Feature: make breakpoint sizes an option too!</p>
+                    <table class="table table-condensed table-hover" style="">
+                        <thead>
+                            <tr>
+                                <th>Breakpoint</th>
+                                <th>Width</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>xxl</code></td>
+                                <td>greater than or equal to 1500 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>xl</code></td>
+                                <td>greater than or equal to 1250 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>lg</code></td>
+                                <td>greater than or equal to 1000 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>md</code></td>
+                                <td>greater than or equal to 750 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>sm</code></td>
+                                <td>greater than or equal to 500 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>xs</code></td>
+                                <td>greater than or equal to 250 pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>xxs</code></td>
+                                <td>less than 250 pixels</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="md-display-1">Event<span style="text-decoration: line-through;">s</span></h2>
+                    <p class="md-body-1">When the container/parent is resized AnyGrid will emit an event. Bind your listener directly to the AnyGrid instance.</p>
+                    <div hljs language="javascript">
+grid.on('resized', function() {
+    // do some jazz to update the children elements perhaps
+});
+</div>
+
+                    <h2 class="md-display-1">API</h2>
+                    <p class="md-body-1">AnyGrid exposes some useful methods that make creating awesome and dynamic layouts easy.</p>
+                    <h3 class="md-subhead">getPerRow(): sometimes it is useful to know how many children are being displayed per row.</h3>
+                    <div hljs language="javascript">
+grid.getPerRow();
+</div>
+
+                    <h3 class="md-subhead">appended(): Adding new elements to the grid is as easy as passing them to appended.</h3>
+                    <div hljs language="javascript">
+var gridItem = document.createElement('div');
+gridItem.innerHTML = '...'; //make sure the new item looks good
+grid.appended(gridItem); // new element getsappended to the grid in the proper position
+</div>
+
+
+                    <h3 class="md-subhead">reloadItems(): You can completely reset your grid html and call reloadItems to let AnyGrid know about the changes</h3>
+                    <div hljs language="javascript">
+// get the previously created grid element
+var grid document.getElementById('#main');
+// reset the html
+grid.innerHTML = '<div class="two-dots">..</div><div>..</div>';
+// let AnyGrid know about what has taken place
+grid.reloadItems();
+</div>
+
+
+                    <h3 class="md-subhead">layout(): the layout API method is usually used after changes like those demonstrated above.</h3>
+                    <div hljs language="javascript">
+grid.reloadItems();
+//now that AnyGrid knows about the changes layout again
+grid.layout();
+</div>
+                </md-content>
+            </div>
         </script>
 
         <script type="text/ng-template" id="slider.html">
@@ -123,6 +276,8 @@
         <script src="/app/Resources/js/angular-ui-router.js"></script>
         <script src="/app/Resources/js/angular-material.js"></script>
         <script src="/app/Resources/js/angular-messages.js"></script>
+        <script src="/app/Resources/js/highlight.pack.js"></script>
+        <script src="/app/Resources/js/angular-highlightjs.js"></script>
         <script src="/app/Resources/js/any-grid.js"></script>
         <script src="/app/Resources/js/app/app.module.js"></script>
         <script src="/app/Resources/js/app/app.directives.js"></script>

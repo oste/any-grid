@@ -7,6 +7,7 @@
     "angular-ui-router": "~0.2.13",
     "material-design-icons": "latest",
     "sanitize-css": "*",
-    "any-grid": "*"
+    "any-grid": "*",
+    "angular-highlightjs": "latest"
   }
 }

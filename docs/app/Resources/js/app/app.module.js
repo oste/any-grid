@@ -1,4 +1,5 @@
 var app = angular.module('app', [
     'ngMaterial',
-    'ui.router'
+    'ui.router',
+    'hljs'
 ]);

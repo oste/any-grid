@@ -1,5 +1,5 @@
 app.controller('HomeCtrl', function($scope, $http) {
-
+    $scope.class = 'home';
 });
 
 app.controller('SliderCtrl', function($scope, $rootScope, $http, preloader, grid, $timeout) {

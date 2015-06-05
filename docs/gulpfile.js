@@ -11,13 +11,21 @@ var scripts = [
   'bower_components/angular-animate/angular-animate.js',
   'bower_components/angular-ui-router/release/angular-ui-router.js',
   'bower_components/angular-material/angular-material.js',
-  'bower_components/angular-messages/angular-messages.js'
-]
+  'bower_components/angular-messages/angular-messages.js',
+  'bower_components/highlightjs/highlight.pack.js',
+  'bower_components/angular-highlightjs/angular-highlightjs.js'
+];
+
+var css = [
+  'bower_components/highlightjs/styles/railscasts.css'
+];
 
 var svgs = [
   'bower_components/material-design-icons/navigation/svg/production/ic_arrow_forward_36px.svg',
   'bower_components/material-design-icons/navigation/svg/production/ic_arrow_back_36px.svg'
 ];
+
+gulp.task('copy', ['copy-svg', 'copy-scripts', 'copy-css']);
 
 gulp.task('server', function() {
     connect.server({
@@ -51,4 +59,9 @@ gulp.task('copy-svg', function() {
 gulp.task('copy-scripts', function() {
     gulp.src(scripts)
       .pipe(gulp.dest('app/Resources/js'));
+});
+
+gulp.task('copy-css', function() {
+    gulp.src(css)
+      .pipe(gulp.dest('app/Resources/css'));
 });
