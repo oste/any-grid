@@ -1109,7 +1109,7 @@ utils.modulo = function( num, div ) {
 };
 
 // ----- isArray ----- //
-
+  
 var objToString = Object.prototype.toString;
 utils.isArray = function( obj ) {
   return objToString.call( obj ) == '[object Array]';
@@ -2817,6 +2817,10 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
     }
 });
 
+AnyGrid.prototype.getBreakPoint = function() {
+    return this.breakPoint;
+}
+
 AnyGrid.prototype.getPerRow = function() {
     return this.perRow;
 }
@@ -2837,18 +2841,25 @@ AnyGrid.prototype._setUp = function() {
 
     if (this.containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
+        this.breakPoint = 'xxl'
     }else if (this.containerWidth >= 1250) {
         this.perRow = this.options.perRow.xl;
+        this.breakPoint = 'xl'
     }else if (this.containerWidth >= 1000) {
         this.perRow = this.options.perRow.lg;
+        this.breakPoint = 'lg'
     }else if (this.containerWidth >= 750) {
         this.perRow = this.options.perRow.md;
+        this.breakPoint = 'md'
     }else if (this.containerWidth >= 500) {
         this.perRow = this.options.perRow.sm;
+        this.breakPoint = 'sm'
     }else if (this.containerWidth >= 250) {
         this.perRow = this.options.perRow.xs;
+        this.breakPoint = 'xs'
     }else {
         this.perRow = this.options.perRow.xxs;
+        this.breakPoint = 'xxs'
     }
 
     this.columnWidth = (this.containerWidth / this.perRow);
