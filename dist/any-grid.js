@@ -2862,6 +2862,10 @@ AnyGrid.prototype._setUp = function() {
         this.breakPoint = 'xxs'
     }
 
+    if (!this.perRow) { // try to just set it to what was passed
+        this.perRow = parseInt(this.options.perRow);
+    }
+
     this.columnWidth = (this.containerWidth / this.perRow);
 
     this.cols = Math.floor( this.containerWidth / this.columnWidth );
