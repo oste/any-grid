@@ -16,7 +16,7 @@ var scripts = ['bower_components/get-style-property/get-style-property.js',
 
 gulp.task('default', ['build']);
 
-gulp.task('build', function() {
+gulp.task('buildjs', function() {
     gulp.src(scripts)
         .pipe(concat('any-grid.js'))
         .pipe(gulp.dest('dist'))
@@ -26,4 +26,8 @@ gulp.task('build', function() {
             }))
         .pipe(rename('any-grid.min.js'))
         .pipe(gulp.dest('dist'));
+});
+
+gulp.task('watch', ['buildjs'], function () {
+    gulp.watch(['./any-grid.js'], ['buildjs']);
 });
