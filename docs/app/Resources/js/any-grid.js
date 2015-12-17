@@ -2798,7 +2798,8 @@ return Outlayer;
 'use strict';
 
 var AnyGrid = Outlayer.create( 'anyGrid', {
-    masonry: true,
+    masonry: false,
+    stacked: false,
     perRow: {
         xxs: 1,
         xs: 1,
@@ -2909,6 +2910,17 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
     if (this.options.masonry) {
         this.columns[column] = this.columns[column] + item.size.height;
+        this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
+    } else if (this.options.stacked) {
+        var rows = (this.items.length / this.cols);
+        column = Math.floor(this.itemIndex / rows);
+        var row = (Math.floor((this.itemIndex + 1) / (column + 1)) - 1);
+
+        x = column * this.columnWidth;
+        y = this.columns[column];
+
+        this.columns[column] = this.columns[column] + item.size.height;
+
         this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
     } else {
         var row = Math.floor( this.itemIndex / this.cols );
