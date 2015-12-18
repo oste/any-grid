@@ -2,6 +2,7 @@ var gulp      = require('gulp');
 var concat    = require('gulp-concat');
 var uglify    = require('gulp-uglify');
 var rename    = require('gulp-rename');
+var connect   = require('gulp-connect');
 
 var scripts = ['bower_components/get-style-property/get-style-property.js',
                 'bower_components/get-size/get-size.js',
@@ -12,7 +13,8 @@ var scripts = ['bower_components/get-style-property/get-style-property.js',
                 'bower_components/fizzy-ui-utils/utils.js',
                 'bower_components/outlayer/item.js',
                 'bower_components/outlayer/outlayer.js',
-                'any-grid.js'];
+                'any-grid.js',
+                'item.js'];
 
 gulp.task('default', ['build']);
 
@@ -29,5 +31,12 @@ gulp.task('buildjs', function() {
 });
 
 gulp.task('watch', ['buildjs'], function () {
-    gulp.watch(['./any-grid.js'], ['buildjs']);
+    gulp.watch(['./any-grid.js', './item.js', './bower_components/outlayer/item.js', './bower_components/outlayer/outlayer.js'], ['buildjs']);
+});
+
+gulp.task('server', function() {
+    connect.server({
+        port: 8888,
+        fallback: 'index.html'
+    });
 });
