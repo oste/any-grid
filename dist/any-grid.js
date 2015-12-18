@@ -2954,8 +2954,10 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     var x = column * this.columnWidth;
     var y = this.columns[column];
 
+    var itemHeight = (this.options.itemHeight ? this.options.itemHeight : item.size.height);
+
     if (this.options.masonry) {
-        this.columns[column] = this.columns[column] + (this.options.itemHeight ? this.options.itemHeight : item.size.height);
+        this.columns[column] = this.columns[column] + itemHeight;
         this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
     } else if (this.options.stacked) {
         var rows = (this.items.length / this.cols);
@@ -2965,7 +2967,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         x = column * this.columnWidth;
         y = this.columns[column];
 
-        this.columns[column] = this.columns[column] + (this.options.itemHeight ? this.options.itemHeight : item.size.height);
+        this.columns[column] = this.columns[column] + itemHeight;
 
         this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
     } else {
@@ -2973,22 +2975,25 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         var firstColumn = (row > 0);
 
         if (firstColumn) {
-            this.columns[column] = this.rows[(row - 1)].maxHeight + (this.options.itemHeight ? this.options.itemHeight : item.size.height);
+            this.columns[column] = this.rows[(row - 1)].maxHeight + itemHeight;
         } else {
-            this.columns[column] = this.columns[column] + (this.options.itemHeight ? this.options.itemHeight : item.size.height);
-        }
-
-        this.rows[row] = this.rows[row] || {};
-        if (!this.rows[row].maxHeight || (this.columns[column] > this.rows[row].maxHeight)) {
-            this.rows[row].maxHeight = this.columns[column];
+            this.columns[column] = this.columns[column] + itemHeight;
         }
 
         if (firstColumn) {
             y = this.rows[(row - 1)].maxHeight;
-            this.maxHeight = Math.max(this.maxHeight, y + (this.options.itemHeight ? this.options.itemHeight : item.size.height));
+            this.maxHeight = Math.max(this.maxHeight, y + itemHeight);
         } else { // if it's the fist row y = 0 and maxHeight is just the height of the tallest item
-            this.maxHeight = Math.max(this.maxHeight, (this.options.itemHeight ? this.options.itemHeight : item.size.height));
+            this.maxHeight = Math.max(this.maxHeight, itemHeight);
         }
+    }
+
+    this.rows[row] = this.rows[row] || {};
+    if (!this.rows[row].maxHeight || (this.columns[column] > this.rows[row].maxHeight)) {
+        this.rows[row].maxHeight = this.columns[column];
+    }
+    if (!this.rows[row].height || (itemHeight > this.rows[row].height)) {
+        this.rows[row].height = itemHeight;
     }
 
     this.itemIndex++;
