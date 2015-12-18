@@ -110,8 +110,6 @@ AnyGrid.prototype._resetLayout = function() {
 };
 
 AnyGrid.prototype._getItemLayoutPosition = function( item ) {
-    item.element.style.width = this.columnWidth + 'px';
-
     item.getSize();
 
     var column = this.itemIndex % this.cols;
@@ -163,6 +161,17 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         y: y
     };
 };
+
+AnyGrid.prototype._postLayout = function() {
+    this.resizeItems();
+    this.resizeContainer();
+};
+
+AnyGrid.prototype.resizeItems = function() {
+    for (var i = 0; i < this.items.length; i++) {
+        this.items[i].element.style.width = this.columnWidth + 'px';
+    };
+}
 
 AnyGrid.prototype._getContainerSize = function() {
     return {
