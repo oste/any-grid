@@ -78,6 +78,12 @@ AnyGrid.prototype._setUp = function() {
         this.perRow = parseInt(this.options.perRow);
     }
 
+    if (this.options.adjust_gutter) {
+        this.itemPadding = getSize(this.items[0].element).paddingLeft;
+        this.element.style.marginLeft = (this.itemPadding * -1) + 'px';
+        this.containerWidth = this.containerWidth + (this.itemPadding * 2);
+    }
+
     this.columnWidth = (this.containerWidth / this.perRow);
 
     this.cols = Math.floor( this.containerWidth / this.columnWidth );
