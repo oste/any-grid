@@ -31,11 +31,11 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
 
 AnyGrid.prototype.getBreakPoint = function() {
     return this.breakPoint;
-}
+};
 
 AnyGrid.prototype.getPerRow = function() {
     return this.perRow;
-}
+};
 
 AnyGrid.prototype.resize = function() {
     if ( !this.isResizeBound || !this.needsResizeLayout() ) {
@@ -53,25 +53,25 @@ AnyGrid.prototype._setUp = function() {
 
     if (this.containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
-        this.breakPoint = 'xxl'
+        this.breakPoint = 'xxl';
     }else if (this.containerWidth >= 1250) {
         this.perRow = this.options.perRow.xl;
-        this.breakPoint = 'xl'
+        this.breakPoint = 'xl';
     }else if (this.containerWidth >= 1000) {
         this.perRow = this.options.perRow.lg;
-        this.breakPoint = 'lg'
+        this.breakPoint = 'lg';
     }else if (this.containerWidth >= 750) {
         this.perRow = this.options.perRow.md;
-        this.breakPoint = 'md'
+        this.breakPoint = 'md';
     }else if (this.containerWidth >= 500) {
         this.perRow = this.options.perRow.sm;
-        this.breakPoint = 'sm'
+        this.breakPoint = 'sm';
     }else if (this.containerWidth >= 250) {
         this.perRow = this.options.perRow.xs;
-        this.breakPoint = 'xs'
+        this.breakPoint = 'xs';
     }else {
         this.perRow = this.options.perRow.xxs;
-        this.breakPoint = 'xxs'
+        this.breakPoint = 'xxs';
     }
 
     if (!this.perRow) { // try to just set it to what was passed
@@ -93,11 +93,11 @@ AnyGrid.prototype._setUp = function() {
     this.rows = {};
     for (var i = 0; i < this.cols; i++) {
         this.columns[i] = 0;
-    };
+    }
 
     this.maxHeight = 0;
     this.itemIndex = 0;
-}
+};
 
 AnyGrid.prototype._create = function() {
     var that = this;
@@ -181,8 +181,8 @@ AnyGrid.prototype._postLayout = function() {
 AnyGrid.prototype.resizeItems = function() {
     for (var i = 0; i < this.items.length; i++) {
         this.items[i].element.style.width = this.columnWidth + 'px';
-    };
-}
+    }
+};
 
 AnyGrid.prototype._getContainerSize = function() {
     return {
