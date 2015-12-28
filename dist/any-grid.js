@@ -2886,24 +2886,24 @@ AnyGrid.prototype.resize = function() {
 AnyGrid.prototype._setUp = function() {
     this.getSize();
 
-    this.containerWidth = Math.floor(this.size.outerWidth);
+    var containerWidth = Math.floor(this.size.outerWidth);
 
-    if (this.containerWidth >= 1500) {
+    if (containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
         this.breakPoint = 'xxl';
-    }else if (this.containerWidth >= 1250) {
+    }else if (containerWidth >= 1250) {
         this.perRow = this.options.perRow.xl;
         this.breakPoint = 'xl';
-    }else if (this.containerWidth >= 1000) {
+    }else if (containerWidth >= 1000) {
         this.perRow = this.options.perRow.lg;
         this.breakPoint = 'lg';
-    }else if (this.containerWidth >= 750) {
+    }else if (containerWidth >= 750) {
         this.perRow = this.options.perRow.md;
         this.breakPoint = 'md';
-    }else if (this.containerWidth >= 500) {
+    }else if (containerWidth >= 500) {
         this.perRow = this.options.perRow.sm;
         this.breakPoint = 'sm';
-    }else if (this.containerWidth >= 250) {
+    }else if (containerWidth >= 250) {
         this.perRow = this.options.perRow.xs;
         this.breakPoint = 'xs';
     }else {
@@ -2915,10 +2915,12 @@ AnyGrid.prototype._setUp = function() {
         this.perRow = parseInt(this.options.perRow);
     }
 
-    if (this.options.adjust_gutter) {
+    this.containerWidth = containerWidth;
+
+    if (this.options.adjust_gutter && this.items.length) {
         this.itemPadding = getSize(this.items[0].element).paddingLeft;
-        this.element.style.marginLeft = (this.itemPadding * -1) + 'px';
-        this.containerWidth = this.containerWidth + (this.itemPadding * 2);
+        this.element.parentNode.style.marginLeft = (this.itemPadding * -1) + 'px';
+        this.containerWidth = containerWidth + (this.itemPadding * 2);
     }
 
     this.columnWidth = (this.containerWidth / this.perRow);
