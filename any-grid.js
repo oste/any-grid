@@ -49,24 +49,24 @@ AnyGrid.prototype.resize = function() {
 AnyGrid.prototype._setUp = function() {
     this.getSize();
 
-    var containerWidth = Math.floor(this.size.outerWidth);
+    this.containerWidth = Math.floor(this.size.outerWidth);
 
-    if (containerWidth >= 1500) {
+    if (this.containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
         this.breakPoint = 'xxl';
-    }else if (containerWidth >= 1250) {
+    }else if (this.containerWidth >= 1250) {
         this.perRow = this.options.perRow.xl;
         this.breakPoint = 'xl';
-    }else if (containerWidth >= 1000) {
+    }else if (this.containerWidth >= 1000) {
         this.perRow = this.options.perRow.lg;
         this.breakPoint = 'lg';
-    }else if (containerWidth >= 750) {
+    }else if (this.containerWidth >= 750) {
         this.perRow = this.options.perRow.md;
         this.breakPoint = 'md';
-    }else if (containerWidth >= 500) {
+    }else if (this.containerWidth >= 500) {
         this.perRow = this.options.perRow.sm;
         this.breakPoint = 'sm';
-    }else if (containerWidth >= 250) {
+    }else if (this.containerWidth >= 250) {
         this.perRow = this.options.perRow.xs;
         this.breakPoint = 'xs';
     }else {
@@ -78,17 +78,17 @@ AnyGrid.prototype._setUp = function() {
         this.perRow = parseInt(this.options.perRow);
     }
 
-    this.containerWidth = containerWidth;
+    var measureContainerWidth = this.containerWidth;
 
     if (this.options.adjust_gutter && this.items.length) {
         this.itemPadding = getSize(this.items[0].element).paddingLeft;
         this.element.parentNode.style.marginLeft = (this.itemPadding * -1) + 'px';
-        this.containerWidth = containerWidth + (this.itemPadding * 2);
+        measureContainerWidth = this.containerWidth + (this.itemPadding * 2);
     }
 
-    this.columnWidth = (this.containerWidth / this.perRow);
+    this.columnWidth = (measureContainerWidth / this.perRow);
 
-    this.cols = Math.floor( this.containerWidth / this.columnWidth );
+    this.cols = Math.floor( measureContainerWidth / this.columnWidth );
     this.cols = Math.max( this.cols, 1 );
 
     this.columns = {};
