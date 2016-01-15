@@ -2863,7 +2863,10 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
     },
     visibleStyle: {
         opacity: 1
-    }
+    },
+    adjustGutter: false,
+    gutter: false
+
 });
 
 AnyGrid.prototype.getBreakPoint = function() {
@@ -2917,8 +2920,8 @@ AnyGrid.prototype._setUp = function() {
 
     var measureContainerWidth = this.containerWidth;
 
-    if (this.options.adjust_gutter && this.items.length) {
-        this.itemPadding = getSize(this.items[0].element).paddingLeft;
+    if (this.options.adjustGutter && (this.items.length || this.options.gutter)) {
+        this.itemPadding = this.options.gutter ? this.options.gutter : getSize(this.items[0].element).paddingLeft;
         this.element.parentNode.style.marginLeft = (this.itemPadding * -1) + 'px';
         measureContainerWidth = this.containerWidth + (this.itemPadding * 2);
     }
@@ -2937,7 +2940,6 @@ AnyGrid.prototype._setUp = function() {
     this.maxHeight = 0;
     this.itemIndex = 0;
 };
-
 AnyGrid.prototype._create = function() {
     var that = this;
 
