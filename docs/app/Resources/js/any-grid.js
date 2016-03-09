@@ -2865,8 +2865,8 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
         opacity: 1
     },
     adjustGutter: false,
-    gutter: false
-
+    gutter: false,
+    removeVerticalGutters: false
 });
 
 AnyGrid.prototype.getBreakPoint = function() {
@@ -2918,12 +2918,14 @@ AnyGrid.prototype._setUp = function() {
         this.perRow = parseInt(this.options.perRow);
     }
 
+    this.verticalPadding = this.options.gutter ? this.options.gutter : (this.items.length ? getSize(this.items[0].element).paddingTop : 0);
+
     var measureContainerWidth = this.containerWidth;
 
     if (this.options.adjustGutter && (this.items.length || this.options.gutter)) {
-        this.itemPadding = this.options.gutter ? this.options.gutter : getSize(this.items[0].element).paddingLeft;
-        this.element.parentNode.style.marginLeft = (this.itemPadding * -1) + 'px';
-        measureContainerWidth = this.containerWidth + (this.itemPadding * 2);
+        var padding = this.options.gutter ? this.options.gutter : getSize(this.items[0].element).paddingLeft;
+        this.element.parentNode.style.marginLeft = (padding * -1) + 'px';
+        measureContainerWidth = this.containerWidth + (padding * 2);
     }
 
     this.columnWidth = (measureContainerWidth / this.perRow);
@@ -2966,14 +2968,26 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
     var itemHeight = (this.options.itemHeight ? this.options.itemHeight : item.size.height);
 
+    this.rowsCount = (this.items.length / this.cols);
+    var row = Math.floor( this.itemIndex / this.cols ) + 1;
+
+    if (this.options.stacked) { // need the row for removeVerticalGutters
+        column = Math.floor(this.itemIndex / this.rowsCount);
+        row = Math.abs((column * this.rowsCount) - this.itemIndex) + 1;
+    }
+
+    if (this.options.removeVerticalGutters) {
+        if (row === 1 && item.size.paddingTop) {
+            itemHeight = itemHeight - this.verticalPadding
+        } else if (row === this.rowsCount && item.size.paddingBottom) {
+            itemHeight = itemHeight - this.verticalPadding
+        }
+    }
+
     if (this.options.masonry) {
         this.columns[column] = this.columns[column] + itemHeight;
         this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
     } else if (this.options.stacked) {
-        var rows = (this.items.length / this.cols);
-        column = Math.floor(this.itemIndex / rows);
-        var row = (Math.floor((this.itemIndex + 1) / (column + 1)) - 1);
-
         x = column * this.columnWidth;
         y = this.columns[column];
 
@@ -2981,8 +2995,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
         this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
     } else {
-        var row = Math.floor( this.itemIndex / this.cols );
-        var firstColumn = (row > 0);
+        var firstColumn = (row > 1);
 
         if (firstColumn) {
             this.columns[column] = this.rows[(row - 1)].maxHeight + itemHeight;
@@ -3009,9 +3022,41 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     this.itemIndex++;
 
     return {
+        row: row,
         x: x,
         y: y
     };
+};
+
+/**
+ * iterate over array and position each item
+ * Reason being - separating this logic prevents 'layout invalidation'
+ * thx @paul_irish
+ * @param {Array} queue
+ */
+AnyGrid.prototype._processLayoutQueue = function( queue ) {
+  for ( var i=0, len = queue.length; i < len; i++ ) {
+    var obj = queue[i];
+    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant, obj.row );
+  }
+};
+
+AnyGrid.prototype._positionItem = function( item, x, y, isInstant, row ) {
+    if ( isInstant ) {
+        // if not transition, just set CSS
+        item.goTo( x, y );
+    } else {
+        item.moveTo( x, y, (this.options.stacked ? true : false));
+    }
+    if (this.options.removeVerticalGutters) {
+        item.element.style.padding = this.verticalPadding + 'px';
+        if (row === 1) {
+            item.element.style.paddingTop = '0';
+        }
+        if (row === this.rowsCount) {
+            item.element.style.paddingBottom = '0';
+        }
+    }
 };
 
 AnyGrid.prototype._postLayout = function() {
@@ -3098,8 +3143,47 @@ function toDashedAll( str ) {
   });
 }
 
-var transitionProps = 'opacity, height, width,' +
+var transitionProps = 'opacity, height, width, padding,' +
   toDashedAll( vendorProperties.transform || 'transform' );
+
+Item.prototype.moveTo = function( x, y, force) {
+
+  if (!supportsCSS3) {
+    this.goTo(x, y);
+    return;
+  }
+
+  this.getPosition();
+  // get current x & y from top/left
+  var curX = this.position.x;
+  var curY = this.position.y;
+
+  var compareX = parseInt( x, 10 );
+  var compareY = parseInt( y, 10 );
+  var didNotMove = compareX === this.position.x && compareY === this.position.y;
+
+  // save end position
+  this.setPosition( x, y );
+
+  // if did not move and not transitioning, just go to layout
+  if ( !force && didNotMove && !this.isTransitioning ) {
+    this.layoutPosition();
+    return;
+  }
+
+  var transX = x - curX;
+  var transY = y - curY;
+  var transitionStyle = {};
+  transitionStyle.transform = this.getTranslate( transX, transY );
+
+  this.transition({
+    to: transitionStyle,
+    onTransitionEnd: {
+      transform: this.layoutPosition
+    },
+    isCleaning: true
+  });
+};
 
 Item.prototype.enableTransition = function(/* style */) {
   // HACK changing transitionProperty during a transition
