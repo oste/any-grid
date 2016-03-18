@@ -2949,7 +2949,9 @@ AnyGrid.prototype._create = function() {
 
     this.element.style.position = "relative";
 
-    this.bindResize();
+    if ( this.options.isResizeBound ) {
+        this.bindResize();
+    }
 
     this._setUp();
 };
@@ -2979,7 +2981,8 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     if (this.options.removeVerticalGutters) {
         if (row === 1 && item.size.paddingTop) {
             itemHeight = itemHeight - this.verticalPadding
-        } else if (row === this.rowsCount && item.size.paddingBottom) {
+        }
+        if (row === this.rowsCount && item.size.paddingBottom) {
             itemHeight = itemHeight - this.verticalPadding
         }
     }
