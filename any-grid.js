@@ -112,7 +112,9 @@ AnyGrid.prototype._create = function() {
 
     this.element.style.position = "relative";
 
-    this.bindResize();
+    if ( this.options.isResizeBound ) {
+        this.bindResize();
+    }
 
     this._setUp();
 };
