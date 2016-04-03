@@ -10,6 +10,7 @@
 
 var AnyGrid = Outlayer.create( 'anyGrid', {
     masonry: false,
+    orderMasonry: true,
     stacked: false,
     perRow: {
         xxs: 1,
@@ -94,7 +95,7 @@ AnyGrid.prototype._setUp = function() {
     this.cols = Math.floor( measureContainerWidth / this.columnWidth );
     this.cols = Math.max( this.cols, 1 );
 
-    this.columns = {};
+    this.columns = [];
     this.rows = {};
     for (var i = 0; i < this.cols; i++) {
         this.columns[i] = 0;
@@ -131,8 +132,17 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     var itemHeight = (this.options.itemHeight ? this.options.itemHeight : item.size.height);
 
     if (this.options.masonry) {
-        this.columns[column] = this.columns[column] + itemHeight;
-        this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
+        if (this.options.orderMasonry) {
+            this.columns[column] = this.columns[column] + itemHeight;
+            this.maxHeight = Math.max(this.maxHeight, this.columns[column]);
+        } else {
+            var minimumY = Math.min.apply( Math, this.columns );
+            var shortColIndex = this.columns.indexOf( minimumY );
+            var x = this.columnWidth * shortColIndex;
+            var y = minimumY;
+            this.columns[ shortColIndex ] = minimumY + itemHeight;
+            this.maxHeight = Math.max.apply( Math, this.columns );
+        }
     } else if (this.options.stacked) {
         var rows = (this.items.length / this.cols);
         column = Math.floor(this.itemIndex / rows);
