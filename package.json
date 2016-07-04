@@ -14,5 +14,25 @@
     "gulp-notify": "~2.2.0",
     "gulp-less": "~3.0.3",
     "gulp-watch": "~4.2.4"
-  }
+  },
+  "description": "Just another grid layout library",
+  "bugs": {
+    "url": "https://github.com/oste/any-grid/issues"
+  },
+  "homepage": "https://github.com/oste/any-grid#readme",
+  "main": "any-grid.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "outlayer": "~2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "grid"
+  ],
+  "author": "Oste <ostehost@gmail.com> (http://ostehost.com)",
+  "license": "MIT"
 }
