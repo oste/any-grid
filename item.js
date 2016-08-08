@@ -62,8 +62,47 @@ function toDashedAll( str ) {
   });
 }
 
-var transitionProps = 'opacity, height, width,' +
+var transitionProps = 'opacity, height, width, padding,' +
   toDashedAll( vendorProperties.transform || 'transform' );
+
+Item.prototype.moveTo = function( x, y, force) {
+
+  if (!supportsCSS3) {
+    this.goTo(x, y);
+    return;
+  }
+
+  this.getPosition();
+  // get current x & y from top/left
+  var curX = this.position.x;
+  var curY = this.position.y;
+
+  var compareX = parseInt( x, 10 );
+  var compareY = parseInt( y, 10 );
+  var didNotMove = compareX === this.position.x && compareY === this.position.y;
+
+  // save end position
+  this.setPosition( x, y );
+
+  // if did not move and not transitioning, just go to layout
+  if ( !force && didNotMove && !this.isTransitioning ) {
+    this.layoutPosition();
+    return;
+  }
+
+  var transX = x - curX;
+  var transY = y - curY;
+  var transitionStyle = {};
+  transitionStyle.transform = this.getTranslate( transX, transY );
+
+  this.transition({
+    to: transitionStyle,
+    onTransitionEnd: {
+      transform: this.layoutPosition
+    },
+    isCleaning: true
+  });
+};
 
 Item.prototype.enableTransition = function(/* style */) {
   // HACK changing transitionProperty during a transition

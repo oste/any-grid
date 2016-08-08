@@ -103,7 +103,9 @@ app.controller('GridCtrl', function($scope, $http, $rootScope, preloader, grid, 
         $scope.getData().success(function(data) {
             process(data);
         }).then(function() {
-            $scope.loading = false;
+            $timeout(function() {
+                $scope.loading = false;
+            }, 75);
         });
     });
 
