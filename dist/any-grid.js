@@ -2882,6 +2882,7 @@ AnyGrid.prototype.resize = function() {
     if ( !this.isResizeBound || !this.needsResizeLayout() ) {
         return;
     }
+    this._setUp();
     this.emitEvent( 'resize', [ this ] );
     this.layout();
     this.emitEvent( 'resized', [ this ] );
