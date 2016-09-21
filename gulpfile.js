@@ -18,7 +18,7 @@ var scripts = ['bower_components/get-style-property/get-style-property.js',
 
 gulp.task('default', ['build']);
 
-gulp.task('buildjs', function() {
+gulp.task('build', function() {
     gulp.src(scripts)
         .pipe(concat('any-grid.js'))
         .pipe(gulp.dest('dist'))
@@ -30,8 +30,8 @@ gulp.task('buildjs', function() {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', ['buildjs'], function () {
-    gulp.watch(['./any-grid.js', './item.js', './bower_components/outlayer/item.js', './bower_components/outlayer/outlayer.js'], ['buildjs']);
+gulp.task('watch', ['build'], function () {
+    gulp.watch(['./any-grid.js', './item.js', './bower_components/outlayer/item.js', './bower_components/outlayer/outlayer.js'], ['build']);
 });
 
 gulp.task('server', function() {
