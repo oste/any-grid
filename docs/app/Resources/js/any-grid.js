@@ -2891,7 +2891,7 @@ AnyGrid.prototype.resize = function() {
 AnyGrid.prototype._setUp = function() {
     this.getSize();
 
-    this.containerWidth = Math.round(this.size.outerWidth);
+    this.containerWidth = this.size.outerWidth;
 
     if (this.containerWidth >= 1500) {
         this.perRow = this.options.perRow.xxl;
