@@ -2866,7 +2866,6 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
         opacity: 1
     },
     adjustGutter: false,
-    gutter: false,
     removeVerticalGutters: false
 });
 
@@ -2919,31 +2918,8 @@ AnyGrid.prototype._setUp = function() {
     if (!this.perRow) { // try to just set it to what was passed
         this.perRow = parseInt(this.options.perRow);
     }
-
-    this.verticalPadding = this.options.gutter ? this.options.gutter : (this.items.length ? getSize(this.items[0].element).paddingTop : 0);
-
-    var measureContainerWidth = this.containerWidth;
-
-    if (this.options.adjustGutter && (this.items.length || this.options.gutter)) {
-        var padding = this.options.gutter ? this.options.gutter : getSize(this.items[0].element).paddingLeft;
-        this.element.parentNode.style.marginLeft = (padding * -1) + 'px';
-        measureContainerWidth = this.containerWidth + (padding * 2);
-    }
-
-    this.columnWidth = (measureContainerWidth / this.perRow);
-
-    this.cols = Math.floor( measureContainerWidth / this.columnWidth );
-    this.cols = Math.max( this.cols, 1 );
-
-    this.columns = [];
-    this.rows = {};
-    for (var i = 0; i < this.cols; i++) {
-        this.columns[i] = 0;
-    }
-
-    this.maxHeight = 0;
-    this.itemIndex = 0;
 };
+
 AnyGrid.prototype._create = function() {
     var that = this;
 
@@ -2958,36 +2934,71 @@ AnyGrid.prototype._create = function() {
     this._setUp();
 };
 
-AnyGrid.prototype._resetLayout = function() {
-    this._setUp();
+/**
+ * layout a collection of item elements
+ * @api public
+ */
+AnyGrid.prototype.layoutItems = function( items, isInstant ) {
+  items = this._getItemsForLayout( items );
+
+  this.columns = [];
+  this.rows = {};
+  for (var i = 0; i < this.perRow; i++) {
+      this.columns[i] = 0;
+  }
+
+  this.maxHeight = 0;
+  this.itemIndex = 0;
+
+  this._layoutItems( items, isInstant );
+
+  this._postLayout();
+};
+
+AnyGrid.prototype.getComputedStyle = function (el, prop) {
+    if (getComputedStyle !== 'undefined') {
+        return getComputedStyle(el, null).getPropertyValue(prop);
+    } else {
+        return el.currentStyle[prop];
+    }
 };
 
 AnyGrid.prototype._getItemLayoutPosition = function( item ) {
-    item.element.style.width = this.columnWidth + 'px';
+    var padding = parseInt(this.getComputedStyle(item.element, 'padding-left'));
+
+    var width = (this.containerWidth / this.columns.length) + ((padding * 2) / this.columns.length);
+
+    item.element.style.width = width + 'px';
+
+    var row = Math.floor( this.itemIndex / this.columns.length ) + 1;
+
+    if (this.options.removeVerticalGutters) {
+        if (row === 1) {
+            item.element.style.setProperty('padding-top', '0', 'important');
+        }
+        if (row === this.rowsCount) {
+            item.element.style.setProperty('padding-bottom', '0', 'important');
+        }
+    }
+
+    if (this.options.adjustGutter) {
+      this.element.parentNode.style.marginLeft = (padding * -1) + 'px';
+    }
+
     item.getSize();
 
-    var column = this.itemIndex % this.cols;
+    var column = this.itemIndex % this.columns.length;
 
-    var x = column * this.columnWidth;
+    var x = column * width;
     var y = this.columns[column];
 
     var itemHeight = (this.options.itemHeight ? this.options.itemHeight : item.size.height);
 
-    this.rowsCount = (this.items.length / this.cols);
-    var row = Math.floor( this.itemIndex / this.cols ) + 1;
+    this.rowsCount = (this.items.length / this.columns.length);
 
     if (this.options.stacked) { // need the row for removeVerticalGutters
         column = Math.floor(this.itemIndex / this.rowsCount);
         row = Math.abs((column * this.rowsCount) - this.itemIndex) + 1;
-    }
-
-    if (this.options.removeVerticalGutters) {
-        if (row === 1 && item.size.paddingTop) {
-            itemHeight = itemHeight - this.verticalPadding
-        }
-        if (row === this.rowsCount && item.size.paddingBottom) {
-            itemHeight = itemHeight - this.verticalPadding
-        }
     }
 
     if (this.options.masonry) {
@@ -2997,13 +3008,13 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         } else {
             var minimumY = Math.min.apply( Math, this.columns );
             var shortColIndex = this.columns.indexOf( minimumY );
-            var x = this.columnWidth * shortColIndex;
+            var x = width * shortColIndex;
             var y = minimumY;
             this.columns[ shortColIndex ] = minimumY + itemHeight;
             this.maxHeight = Math.max.apply( Math, this.columns );
         }
     } else if (this.options.stacked) {
-        x = column * this.columnWidth;
+        x = column * width;
         y = this.columns[column];
 
         this.columns[column] = this.columns[column] + itemHeight;
@@ -3041,48 +3052,6 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         x: x,
         y: y
     };
-};
-
-/**
- * iterate over array and position each item
- * Reason being - separating this logic prevents 'layout invalidation'
- * thx @paul_irish
- * @param {Array} queue
- */
-AnyGrid.prototype._processLayoutQueue = function( queue ) {
-  for ( var i=0, len = queue.length; i < len; i++ ) {
-    var obj = queue[i];
-    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant, obj.row );
-  }
-};
-
-AnyGrid.prototype._positionItem = function( item, x, y, isInstant, row ) {
-    if ( isInstant ) {
-        // if not transition, just set CSS
-        item.goTo( x, y );
-    } else {
-        item.moveTo( x, y, (this.options.stacked ? true : false));
-    }
-    if (this.options.removeVerticalGutters) {
-        item.element.style.padding = this.verticalPadding + 'px';
-        if (row === 1) {
-            item.element.style.paddingTop = '0';
-        }
-        if (row === this.rowsCount) {
-            item.element.style.paddingBottom = '0';
-        }
-    }
-};
-
-AnyGrid.prototype._postLayout = function() {
-    this.resizeItems();
-    this.resizeContainer();
-};
-
-AnyGrid.prototype.resizeItems = function() {
-    for (var i = 0; i < this.items.length; i++) {
-        this.items[i].element.style.width = this.columnWidth + 'px';
-    }
 };
 
 AnyGrid.prototype._getContainerSize = function() {
