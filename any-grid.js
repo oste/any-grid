@@ -95,8 +95,8 @@ AnyGrid.prototype.resize = function() {
     // this._setUp();
     this._resetLayout();
     this.emitEvent( 'resize', [ this ] );
-    this.layout(6);
-    this.emitEvent( 'resized', [ this ] );
+    // this.layout(6);
+    // this.emitEvent( 'resized', [ this ] );
 };
 
 AnyGrid.prototype._resetLayout = function(check) {
