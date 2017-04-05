@@ -365,8 +365,15 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
     this.rows[column].top = this.rows[column].top + item.size.height;
 
-    // BIG CHANGE for 2 cols
+    // increae top for all row columns
     for (var i = 1; i < item.span; i++) {
+      if (!this.rows[column + i]) {
+        this.rows[column + i] = {
+            top: 0,
+            count: 0,
+            maxHeight: 0
+        };
+      }
       this.rows[column + i].top = this.rows[column + i].top + item.size.height;
     }
 
