@@ -22,6 +22,7 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
         xxl: 6
     },
     breakpoints: {
+        xxs: 0,
         xs: 250,
         sm: 500,
         md: 750,
