@@ -340,7 +340,8 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
         this.rows[row].perRow = (this.rowCounter + 1);
       }
 
-      this.rows[row].perRow = ((this.rows[row].perRow - item.span) * 2) + 1;
+      this.stacking = true;
+
       this.rows[row].spans = { //TODO
         leftReset: width,
         span: item.span
