@@ -42,6 +42,28 @@ var AnyGrid = Outlayer.create( 'anyGrid', {
     column_spans: false
 });
 
+AnyGrid.prototype.getGreaterLessThanBreakPoints = function() {
+  var breakpoints = [];
+  var index = 0;
+  var indexed = false;
+  for (var key in this.options.breakpoints) {
+    if (this.options.breakpoints.hasOwnProperty(key)) {
+      breakpoints.push(key);
+      if (this.getBreakPoint() == key) {
+        indexed = true;
+      }
+      if (!indexed) {
+        index++;
+      }
+    }
+  }
+
+  return {
+    gt: breakpoints.slice(0, index),
+    lt: breakpoints.slice(index + 1)
+  }
+};
+
 AnyGrid.prototype.getBreakPoint = function() {
     return this.breakPoint;
 };
