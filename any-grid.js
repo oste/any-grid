@@ -91,7 +91,7 @@ AnyGrid.prototype._itemize = function( elems ) {
     for (var j = 0; j < this.options.column_spans.length; j++) {
       if (matchesSelector(elem, this.options.column_spans[j].selector)) {
         item.span = this.options.column_spans[j].spans;
-        break;
+        // break;
       }
       // console.log(this.options.column_spans[i].selector);
     }
