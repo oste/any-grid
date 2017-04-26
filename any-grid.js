@@ -128,6 +128,7 @@ AnyGrid.prototype._resetLayout = function(check) {
     this.rows = {};
     this.nextRow = 0;
     this.rowCounter = 0;
+    this.spanCounter = 0;
     this.nextColumn = 0;
     this.heights = {};
     this.maxHeight = 0;
@@ -283,6 +284,12 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
       this.element.parentNode.style.marginLeft = (paddingLeft * -1) + 'px';
     }
 
+    if (this.stacking) {
+      var stacking = true;
+    } else {
+      var stacking = false;
+    }
+
     var row = this.nextRow;
 
     var column = this.nextColumn;
@@ -328,16 +335,24 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
     if (item.span > 1) {
       this.rows[row].perRow = ((this.rows[row].perRow - item.span) * 2) + 1;
+
+      if ((this.spanCounter + item.span) == this.perRow) {
+        this.rows[row].perRow = (this.rowCounter + 1);
+      }
+
+      this.rows[row].perRow = ((this.rows[row].perRow - item.span) * 2) + 1;
       this.rows[row].spans = { //TODO
         leftReset: width,
         span: item.span
       };
     }
 
+    this.spanCounter += item.span;
     this.rowCounter++;
 
     if (this.rowCounter == this.rows[row].perRow) {
         this.rowCounter = 0;
+        this.spanCounter = 0;
         this.nextRow++;
     }
 
@@ -358,6 +373,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     if (this.nextColumn >= this.perRow || this.nextStacked) {
         this.nextColumn = this.rows[row].spans.span;
         this.rows[row].spans.span = this.rows[row].spans.span + item.span;
+        this.stacking = false;
 
         if (this.rows[row].count >= this.rows[row].perRow) {
           this.nextStacked = false;
@@ -369,7 +385,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
       this.nextStacked = false;
     }
 
-    if (this.options.removeVerticalGutters && !this.nextStacked && (row + 1) == this.rowCount) {
+    if (this.options.removeVerticalGutters && (row + 1) == this.rowCount && !stacking) {
       item.element.style.setProperty('padding-bottom', '0', 'important');
     }
 
