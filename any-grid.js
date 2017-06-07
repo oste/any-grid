@@ -121,6 +121,7 @@ AnyGrid.prototype._resetLayout = function(check) {
     this.nextColumn = 0;
     this.heights = {};
     this.maxHeight = 0;
+    this.index = 0;
 
     this.getSize();
 
@@ -321,6 +322,14 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     if (!this.rows[row].perRow) {
       this.rows[row].perRow = this.perRow;
     }
+
+    if (!this.rows[row].items) {
+      this.rows[row].items = [];
+    }
+
+    this.rows[row].items.push(item);
+    item.index = this.index;
+    this.index++;
 
     if (item.span > 1) {
       this.rows[row].perRow = ((this.rows[row].perRow - item.span) * 2) + 1;
