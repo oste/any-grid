@@ -104,6 +104,11 @@ Item.prototype.moveTo = function( x, y, force) {
   });
 };
 
+Item.prototype.setPosition = function( x, y ) {
+  this.position.x = Number(Math.round(x + 'e2') + 'e-2');
+  this.position.y = Number(Math.round(y + 'e2') + 'e-2')
+};
+
 Item.prototype.enableTransition = function(/* style */) {
   // HACK changing transitionProperty during a transition
   // will cause transition to jump
