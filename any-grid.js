@@ -116,6 +116,7 @@ AnyGrid.prototype._resetLayout = function(check) {
     this.columns = {};
     this.rows = {};
     this.nextRow = 0;
+    this.row = 0;
     this.rowCounter = 0;
     this.spanCounter = 0;
     this.nextColumn = 0;
@@ -245,14 +246,14 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     // item.element.style.width = (this.containerWidth / this.columns.length) + 'px';
 
     var paddingTop = parseFloat(this.getComputedStyle(item.element, 'padding-top'));
-    var paddingRight = parseFloat(revUtils.getComputedStyle(item.element, 'padding-right'));
+    var paddingRight = parseFloat(this.getComputedStyle(item.element, 'padding-right'));
     var paddingBottom = parseFloat(this.getComputedStyle(item.element, 'padding-bottom'));
     var paddingLeft = parseFloat(this.getComputedStyle(item.element, 'padding-left'));
 
     //promote child padding $$$
     var child = item.element.children[0];
     var childPaddingTop = parseFloat(this.getComputedStyle(child, 'padding-top'));
-    var childPaddingRight = parseFloat(revUtils.getComputedStyle(child, 'padding-right'));
+    var childPaddingRight = parseFloat(this.getComputedStyle(child, 'padding-right'));
     var childPaddingBottom = parseFloat(this.getComputedStyle(child, 'padding-bottom'));
     var childPaddingLeft = parseFloat(this.getComputedStyle(child, 'padding-left'));
 
@@ -270,7 +271,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
 
     item.element.style.width = width + 'px';
 
-    if (this.options.adjustGutter) {
+    if (this.index == 0 && this.options.adjustGutter) {
       this.element.parentNode.style.marginLeft = (paddingLeft * -1) + 'px';
     }
 
@@ -281,6 +282,7 @@ AnyGrid.prototype._getItemLayoutPosition = function( item ) {
     }
 
     var row = this.nextRow;
+    this.row = row;
 
     var column = this.nextColumn;
 
